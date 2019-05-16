@@ -17,7 +17,7 @@
 		<div id="content">
 			<div id="user">
 
-				<form id="join-form" name="joinForm" method="post" action="${ pageContext.servletContext.contextPath }/user?a=update">
+				<form id="join-form" name="joinForm" method="post" action="${ pageContext.servletContext.contextPath }/user/update">
 					<label class="block-label" for="name">이름</label>
 					<input id="name" name="name" type="text" value="${ userVo.name }">
 
@@ -47,10 +47,6 @@
 						<input id="agree-prov" type="checkbox" name="agreeProv" value="y">
 						<label>서비스 약관에 동의합니다.</label>
 					</fieldset>
-					
-					<!-- id값도 함께 보낸다. -->
-					<input type="hidden" name="no" value="${ userVo.no }">
-					
 					
 					<input type="submit" value="수정하기">
 					

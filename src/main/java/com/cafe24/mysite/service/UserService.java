@@ -23,7 +23,11 @@ public class UserService {
 	}
 	
 	public UserVo getUser(Long userNo) {
-		return null;
+		return userDao.get(userNo);
+	}
+
+	public Boolean update(UserVo userVo) {
+		return userDao.update(userVo);
 	}
 	
 }

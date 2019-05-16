@@ -17,8 +17,7 @@
 		
 		<div id="content">
 			<div id="guestbook">
-				<form action="${ pageContext.servletContext.contextPath }/guestbook" method="post">
-					<input type="hidden" name="a" value="add">
+				<form action="${ pageContext.servletContext.contextPath }/guestbook/add" method="post">
 					<table>
 						<tr>
 							<td>이름</td>
@@ -46,7 +45,7 @@
 								<td>${ vo.name }</td>
 								<td>${ vo.regDate }</td>
 								<td><a
-									href="${ pageContext.servletContext.contextPath }/guestbook?a=deleteform&no=${ vo.no }">삭제</a></td>
+									href="${ pageContext.servletContext.contextPath }/guestbook/delete/${ vo.no }">삭제</a></td>
 							</tr>
 							<tr>
 								<!-- 표현식에는 개행을 저장할 수 없다. -> pageContext에 지정한다. -->

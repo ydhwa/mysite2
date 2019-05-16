@@ -16,8 +16,7 @@
 
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${ pageContext.servletContext.contextPath }/board?a=add">
-					<input type = "hidden" name = "a" value="write">
+				<form class="board-form" method="post" action="${ pageContext.servletContext.contextPath }/board/add">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>

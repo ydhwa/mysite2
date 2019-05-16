@@ -35,17 +35,17 @@
 					<c:forEach items='${ list }' var='vo' varStatus='status'>
 						<tr>
 							<td>${ count - status.index }</td>
-							<td><a href="${ pageContext.servletContext.contextPath }/board?a=view&no=${ vo.no }">${ vo.title }</a></td>
+							<td><a href="${ pageContext.servletContext.contextPath }/board/view/${ vo.no }">${ vo.title }</a></td>
 							<td>${ vo.userName }</td>
 							<td>${ vo.views }</td>
 							<td>${ vo.regDate }</td>
-							<td><a href="${ pageContext.servletContext.contextPath }/board?a=delete&no=${ vo.no }" class="del">삭제</a></td>
+							<td><a href="${ pageContext.servletContext.contextPath }/board/delete/${ vo.no }" class="del">삭제</a></td>
 						</tr>
 					</c:forEach>
 					
 				</table>
 				<div class="bottom">
-					<a href="${ pageContext.servletContext.contextPath }/board?a=addform" id="new-book">글쓰기</a>
+					<a href="${ pageContext.servletContext.contextPath }/board/add" id="new-book">글쓰기</a>
 				</div>				
 			</div>
 		</div>
