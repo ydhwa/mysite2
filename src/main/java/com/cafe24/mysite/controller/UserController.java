@@ -5,11 +5,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cafe24.mysite.exception.UserDaoException;
 import com.cafe24.mysite.service.UserService;
 import com.cafe24.mysite.vo.UserVo;
 
@@ -100,4 +102,11 @@ public class UserController {
 	public String updateSuccess() {
 		return "user/updatesuccess";
 	}
+	
+//	@ExceptionHandler( Exception.class )
+//	public String handleUserDaoException() {
+//		System.out.println("예외 발생!!!!!!!!!!!!!!!!");
+//		return "error/exception";
+//	}
+
 }

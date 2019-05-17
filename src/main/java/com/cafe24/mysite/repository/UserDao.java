@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import org.springframework.stereotype.Repository;
 
+import com.cafe24.mysite.exception.UserDaoException;
 import com.cafe24.mysite.vo.UserVo;
 
 @Repository
@@ -112,7 +113,7 @@ public class UserDao {
 		return result;
 	}
 	
-	public UserVo get(String email, String password) {
+	public UserVo get(String email, String password) throws UserDaoException {
 		UserVo result = null;
 		
 		Connection conn = null;
@@ -120,7 +121,8 @@ public class UserDao {
 		ResultSet rs = null;
 		try {
 			conn = CustomConnector.getConnection();
-			String sql = "select no, name from user " +
+			// 일부러 SQLException 발생시킴
+			String sql = "elect no, name from user " +
 					"where email=? and password=?";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -138,7 +140,7 @@ public class UserDao {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("error: " + e);
+			throw new UserDaoException(e.getMessage());
 		} finally {
 			CustomConnector.closeConnection(rs, pstmt, conn);
 		}
