@@ -10,11 +10,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Oooops!</h1>
+	<h1>Oooops! - ${ uri }</h1>
 	<p>
 		예외 발생!!!!!!<br>
 		===============================<br>
-		
 	</p>
+	<pre style="color: #d00; font-weight: bold;">
+${ exception }
+	</pre>
 </body>
 </html>

@@ -22,11 +22,11 @@
 					<input id="name" name="name" type="text" value="${ userVo.name }">
 
 					<label class="block-label" for="email">이메일</label>
-					<input id="email" name="email" type="text" value="${ userVo.email }">
-					<input type="button" value="id 중복체크">
+					<b>${ userVo.email }</b><br>
+					<input type="hidden" name="email" value="${ userVo.email }">
 					
 					<label class="block-label">패스워드</label>
-					<input name="password" type="password" value="${ userVo.password }">
+					<input name="password" type="password" value="">
 					
 					<fieldset>
 						<legend>성별</legend>
@@ -57,5 +57,11 @@
 		<c:import url='/WEB-INF/views/includes/navigation.jsp'/>
 		<c:import url='/WEB-INF/views/includes/footer.jsp'/>
 	</div>
+	
+	<c:if test="${ param.result == 'success' }">
+		<script>
+			alert('정상적으로 수정되었습니다.');
+		</script>
+	</c:if>
 </body>
 </html>

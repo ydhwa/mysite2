@@ -1,10 +1,12 @@
 package com.cafe24.mysite.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.sql.DataSource;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.cafe24.mysite.exception.UserDaoException;
@@ -12,173 +14,40 @@ import com.cafe24.mysite.vo.UserVo;
 
 @Repository
 public class UserDao {
+	@Autowired
+	private SqlSession sqlSession;
+	
+	@Autowired
+	private DataSource dataSource;
 	
 	public Boolean insert(UserVo vo) {
-		Boolean result = false;
-
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = CustomConnector.getConnection();
-
-			String sql =
-						"insert " +
-						"into user " +
-						"values(null, ?, ?, ?, ?, now())";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, vo.getName());
-			pstmt.setString(2, vo.getEmail());
-			pstmt.setString(3, vo.getPassword());
-			pstmt.setString(4, vo.getGender());
-
-			result = (1 == pstmt.executeUpdate());
-
-		} catch (SQLException e) {
-			System.out.println("error: " + e);
-		} finally {
-			CustomConnector.closeConnection(null, pstmt, conn);
-		}
-
-		return result;
+//		System.out.println(vo);
+		int count = sqlSession.insert("user.insert", vo);
+//		System.out.println(vo);
+		return 1 == count;
 	}
 	
 	public Boolean update(UserVo vo) {
-		Boolean result = false;
-
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = CustomConnector.getConnection();
-
-			String sql =
-						"update user " + 
-						"set name = ?, email = ?, password = ?, gender = ? " + 
-						"where no = ?";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, vo.getName());
-			pstmt.setString(2, vo.getEmail());
-			pstmt.setString(3, vo.getPassword());
-			pstmt.setString(4, vo.getGender());
-			pstmt.setLong(5, vo.getNo());
-
-			result = (1 == pstmt.executeUpdate());
-
-		} catch (SQLException e) {
-			System.out.println("error: " + e);
-		} finally {
-			CustomConnector.closeConnection(null, pstmt, conn);
-		}
-
-		return result;
+		int count = sqlSession.update("user.update", vo);
+		return 1 == count;
 	}
 	
 	// logout, update
 	public UserVo get(Long no) {
-		UserVo result = null;
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			conn = CustomConnector.getConnection();
-			String sql =
-					"select name, email, password, gender from user " +
-					"where no = ?";
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setLong(1,  no);
-
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				String name = rs.getString(1);
-				String email = rs.getString(2);
-				String password = rs.getString(3);
-				String gender = rs.getString(4);
-				
-				result = new UserVo();
-				result.setNo(no);
-				result.setName(name);
-				result.setEmail(email);
-				result.setPassword(password);
-				result.setGender(gender);
-			}
-
-		} catch (SQLException e) {
-			System.out.println("error: " + e);
-		} finally {
-			CustomConnector.closeConnection(rs, pstmt, conn);
-		}
-		return result;
+		return sqlSession.selectOne("user.getByNo", no);
 	}
 	
 	public UserVo get(String email, String password) throws UserDaoException {
-		UserVo result = null;
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			conn = CustomConnector.getConnection();
-			// 일부러 SQLException 발생시킴
-			String sql = "elect no, name from user " +
-					"where email=? and password=?";
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1,  email);
-			pstmt.setString(2, password);
-
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				Long no = rs.getLong(1);
-				String name = rs.getString(2);
-				
-				result = new UserVo();
-				result.setNo(no);
-				result.setName(name);
-			}
-
-		} catch (SQLException e) {
-			throw new UserDaoException(e.getMessage());
-		} finally {
-			CustomConnector.closeConnection(rs, pstmt, conn);
-		}
-		return result;
+		Map<String, String> map = new HashMap<>();
+		map.put("email", email);
+		map.put("password", password);
+		UserVo userVo = sqlSession.selectOne("user.getByEmailAndPassword", map);
+		return userVo;
 	}
 	
 	// 이메일 중복성 검사(이메일로 로그인 하기 때문)
-	public Boolean isEmailValidate(String email) {
-		Boolean result = null;
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			conn = CustomConnector.getConnection();
-			String sql =
-					"select exists( " + 
-					"select * " + 
-					"from user " + 
-					"where email = ?)";
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1,  email);
-
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				Boolean validation = rs.getBoolean(1);
-				
-				result = validation;
-			}
-
-		} catch (SQLException e) {
-			System.out.println("error: " + e);
-		} finally {
-			CustomConnector.closeConnection(rs, pstmt, conn);
-		}
-		return result;
+	public Boolean getEmailValidation(String email) {
+		return sqlSession.selectOne("user.getEmailValidation", email);
 	}
-	
-	
+
 }

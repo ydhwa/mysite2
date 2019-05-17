@@ -75,7 +75,7 @@ public class UserController {
 	public String update(HttpSession session, Model model) {
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		model.addAttribute("userVo", userService.getUser(authUser.getNo()));
-		
+
 		return "user/update";
 	}
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -89,24 +89,20 @@ public class UserController {
 		if(authUser == null) {	// 로그인 정보가 없는데 수정하려고 할 때
 			return "redirect:/";
 		}
-		
 		userVo.setNo(authUser.getNo());
 		userService.update(userVo);
 		
-		// 수정 후 바로 반영을 위해 수정된 userVo를 세션의 속성 테이블에 등록함
-		session.setAttribute("authUser", userVo);
+		// 수정 후 바로 반영을 위해 수정된 userVo를 세션의 속성 테이블에 등록하면 이름 공란도 반영이 됨.
+		// 따라서, authUser 업데이트 된 유저 정보를 다시 얻어온다.
+		/*
+		 * 여기에 작성한 코드를 userService.update에 옮긴다.
+		 * userService.update의 반환값은 UserVo로 한다.
+		 * 이 userVo의 값을 화면에 뿌려주고, 리다이렉트가 아닌 포워드 방식을 사용해보자.
+		 */
+		UserVo updatedAuthUser = userService.getUser(authUser.getNo());
+		updatedAuthUser.setNo(authUser.getNo());
+		session.setAttribute("authUser", updatedAuthUser);
 		
-		return "redirect:/user/updatesuccess";
+		return "redirect:/user/update?result=success";
 	}
-	@RequestMapping("/updatesuccess")
-	public String updateSuccess() {
-		return "user/updatesuccess";
-	}
-	
-//	@ExceptionHandler( Exception.class )
-//	public String handleUserDaoException() {
-//		System.out.println("예외 발생!!!!!!!!!!!!!!!!");
-//		return "error/exception";
-//	}
-
 }
