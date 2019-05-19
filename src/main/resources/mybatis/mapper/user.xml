@@ -17,7 +17,7 @@
 		</selectKey>
 	</insert>
 
-	<select id="getByEmailAndPassword" resultType="userVo" parameterType="map">
+	<select id="getByEmailAndPassword" resultType="uservo" parameterType="map">
 		<![CDATA[
 			select no, name 
 			from user 
@@ -26,9 +26,17 @@
 		]]>
 	</select>
 
-	<select id="getByNo" resultType="userVo" parameterType="long">
+	<select id="getByNo" resultType="uservo" parameterType="long">
 		<![CDATA[
 			select name, email, gender 
+			from user 
+			where no = #{ value };
+		]]>
+	</select>
+	
+	<select id="getNameByNo" resultType="string" parameterType="long">
+		<![CDATA[
+			select name 
 			from user 
 			where no = #{ value };
 		]]>

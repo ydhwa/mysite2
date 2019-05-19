@@ -26,8 +26,13 @@ public class UserService {
 		return userDao.get(userNo);
 	}
 
-	public Boolean update(UserVo userVo) {
-		return userDao.update(userVo);
+	// 업데이트를 한 후 업데이트가 된 유저 정보를 반환한다.
+	public UserVo update(UserVo userVo) {
+		userDao.update(userVo);
+		
+		// authUser에는 최소한의 정보(번호, 이름)만 전달시키려 함
+		Long no = userVo.getNo();
+		return new UserVo(no, userDao.getName(no));
 	}
 	
 }

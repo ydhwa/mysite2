@@ -45,6 +45,10 @@ public class UserDao {
 		return userVo;
 	}
 	
+	public String getName(Long no) {
+		return sqlSession.selectOne("user.getNameByNo", no);
+	}
+	
 	// 이메일 중복성 검사(이메일로 로그인 하기 때문)
 	public Boolean getEmailValidation(String email) {
 		return sqlSession.selectOne("user.getEmailValidation", email);

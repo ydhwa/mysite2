@@ -14,6 +14,10 @@ public class UserVo {
 		this.email = email;
 		this.password = password;
 	}
+	public UserVo(Long no, String name) {
+		this.no = no;
+		this.name = name;
+	}
 	
 	public Long getNo() {
 		return no;

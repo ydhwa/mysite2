@@ -58,7 +58,7 @@
 		<c:import url='/WEB-INF/views/includes/footer.jsp'/>
 	</div>
 	
-	<c:if test="${ param.result == 'success' }">
+	<c:if test="${ result == 'success' }">
 		<script>
 			alert('정상적으로 수정되었습니다.');
 		</script>
