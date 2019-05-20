@@ -3,47 +3,59 @@
 
 <mapper namespace="board">
 
-	<insert id="insert" parameterType="boardvo">
-		<![CDATA[
-			insert 
-			into board
-			values(null, #{ title }, #{ contents }, now(), 0, #{ userNo });
-		]]>
-	</insert>
-	
-	<update id="update" parameterType="boardvo">
-		<![CDATA[
-			update board 
-			set title = #{ title }, contents = #{ contents } 
-			where no = #{ no };
-		]]>
-	</update>
-	
-	<select id="getByNo" parameterType="long" resultType="boardvo">
-		<![CDATA[
-			select b.no as no, 
-				u.name as username, 
-				title, 
-				contents, 
-				date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') as regdate, 
-				views, 
-				b.user_no as userno 
-			from board b, user u 
-			where b.user_no = u.no 
-				and b.no = #{ value };
-		]]>
-	</select>
+<!-- getList(list, search)
 
-	<select id="getList" resultType="boardvo">
-		<![CDATA[
-			select b.no as no, 
-				u.name as username, 
-				title, 
-				date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') as regdate, 
-				views  
-			from board b, user u 
-			where b.user_no = u.no  
-			order by regdate desc;
-		]]>
-	</select>
+select <필요한것들>
+from board
+[where title like '%[키워드]%']
+order by group_no desc, order_no asc
+limit <0부터시작하는시작점> <수량>;
+-->
+
+
+<!-- getByNo
+
+select b.no as no,
+	u.name as username,
+	title,
+	contents,
+	date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') as regdate,
+	views,
+	b.user_no as userno
+from board b, user u
+where b.user_no = u.no
+	and b.no = #{ value };
+-->
+
+
+<!-- getListSize
+
+select count(*)
+from board;
+-->
+
+
+<!-- insert
+
+insert
+into board
+values(<잘 채워넣기 (ifnull 등등 써야함)>);
+-->
+
+
+<!-- update
+
+update board
+set <적당히필요한것들>
+where no = [번호];
+-->
+
+
+<!-- delete
+
+delete
+from board
+where no = [번호];
+-->
+
 </mapper>

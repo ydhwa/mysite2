@@ -14,7 +14,12 @@ public class BoardService {
 	@Autowired
 	private BoardDao boardDao;
 
-	public List<BoardVo> getBoards() {
+	// pager
+	private final int COUNT_PER_PAGE = 3;
+	private final int COUNT_PER_PAGER = 5;
+
+	public List<BoardVo> getBoards(int currPage, String keyword) {
+		//
 		return boardDao.getList();
 	}
 
@@ -23,12 +28,12 @@ public class BoardService {
 	}
 
 	public Boolean addBoard(BoardVo boardVo) {
-		return boardDao.insert(boardVo); 
+		return boardDao.insert(boardVo);
 	}
 
 	public Boolean updateBoard(BoardVo boardVo) {
 		return boardDao.update(boardVo);
 	}
-	
-	
+
+
 }

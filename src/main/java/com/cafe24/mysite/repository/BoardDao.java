@@ -12,10 +12,10 @@ import com.cafe24.mysite.vo.BoardVo;
 
 @Repository
 public class BoardDao {
-	
+
 	@Autowired
 	private DataSource dataSource;
-	
+
 	@Autowired
 	private SqlSession sqlSession;
 
@@ -23,20 +23,29 @@ public class BoardDao {
 		int count = sqlSession.insert("board.insert", vo);
 		return 1 == count;
 	}
-	
+
 	public Boolean update(BoardVo vo) {
 		int count = sqlSession.update("board.update", vo);
 		return 1 == count;
 	}
-	
+
 	// updateform, view(update에서는 등록일과 조회수를 볼 필요 없지만 그냥 한번에 처리해버림)
 	public BoardVo get(Long no) {
 		return sqlSession.selectOne("board.getByNo", no);
 	}
-	
+
 	public List<BoardVo> getList() {
 		return sqlSession.selectList("board.getList");
 	}
-	
-	
+
+	public Integer getListSize() {
+		return sqlSession.selectOne("board.getListSize");
+	}
+
+	public Boolean delete(Long no) {
+		int count = sqlSession.delete("board.delete", no);
+		return 1 == count;
+	}
+
+
 }
