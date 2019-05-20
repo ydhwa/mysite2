@@ -16,27 +16,32 @@ import com.cafe24.mysite.vo.UserVo;
 public class UserDao {
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	@Autowired
 	private DataSource dataSource;
-	
+
 	public Boolean insert(UserVo vo) {
 //		System.out.println(vo);
 		int count = sqlSession.insert("user.insert", vo);
 //		System.out.println(vo);
 		return 1 == count;
 	}
-	
+
 	public Boolean update(UserVo vo) {
 		int count = sqlSession.update("user.update", vo);
 		return 1 == count;
 	}
 	
-	// logout, update
 	public UserVo get(Long no) {
 		return sqlSession.selectOne("user.getByNo", no);
 	}
-	
+
+	// email exist
+	public UserVo get(String email) {
+		return sqlSession.selectOne("user.getByEmail", email);
+	}
+
+	// logout, update
 	public UserVo get(String email, String password) throws UserDaoException {
 		Map<String, String> map = new HashMap<>();
 		map.put("email", email);
@@ -44,14 +49,9 @@ public class UserDao {
 		UserVo userVo = sqlSession.selectOne("user.getByEmailAndPassword", map);
 		return userVo;
 	}
-	
+
 	public String getName(Long no) {
 		return sqlSession.selectOne("user.getNameByNo", no);
-	}
-	
-	// 이메일 중복성 검사(이메일로 로그인 하기 때문)
-	public Boolean getEmailValidation(String email) {
-		return sqlSession.selectOne("user.getEmailValidation", email);
 	}
 
 }

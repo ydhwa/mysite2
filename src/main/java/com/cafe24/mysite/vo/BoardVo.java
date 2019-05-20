@@ -4,11 +4,18 @@ public class BoardVo {
 	private Long no;
 	private String title;
 	private String contents;
+	private Integer hit;
 	private String regDate;
-	private Integer views;
 	
+	// pager
+	private Long groupNo;
+	private Long orderNo;
+	private Integer depth;
+	
+	// join
 	private Long userNo;
 	private String userName;
+	
 	public Long getNo() {
 		return no;
 	}
@@ -27,17 +34,35 @@ public class BoardVo {
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
+	public Integer getHit() {
+		return hit;
+	}
+	public void setHit(Integer hit) {
+		this.hit = hit;
+	}
 	public String getRegDate() {
 		return regDate;
 	}
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
-	public Integer getViews() {
-		return views;
+	public Long getGroupNo() {
+		return groupNo;
 	}
-	public void setViews(Integer views) {
-		this.views = views;
+	public void setGroupNo(Long groupNo) {
+		this.groupNo = groupNo;
+	}
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	public Integer getDepth() {
+		return depth;
+	}
+	public void setDepth(Integer depth) {
+		this.depth = depth;
 	}
 	public Long getUserNo() {
 		return userNo;
@@ -53,7 +78,8 @@ public class BoardVo {
 	}
 	@Override
 	public String toString() {
-		return "BoardVo [no=" + no + ", title=" + title + ", contents=" + contents + ", regDate=" + regDate + ", views="
-				+ views + ", userNo=" + userNo + ", userName=" + userName + "]";
+		return "BoardVo [no=" + no + ", title=" + title + ", contents=" + contents + ", hit=" + hit + ", regDate="
+				+ regDate + ", groupNo=" + groupNo + ", orderNo=" + orderNo + ", depth=" + depth + ", userNo=" + userNo
+				+ ", userName=" + userName + "]";
 	}
 }

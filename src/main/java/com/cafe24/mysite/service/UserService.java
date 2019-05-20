@@ -12,6 +12,11 @@ public class UserService {
 	
 	@Autowired
 	private UserDao userDao;
+	
+	public Boolean existEmail(String email) {
+		UserVo userVo = userDao.get(email);
+		return userVo != null;
+	}
 
 	public Boolean join(UserVo userVo) {
 		// 원래 insert는 count를 return해줘야 함

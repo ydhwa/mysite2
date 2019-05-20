@@ -26,6 +26,14 @@
 		]]>
 	</select>
 
+	<select id="getByEmail" resultType="uservo" parameterType="string">
+		<![CDATA[
+			select no, name, email, gender 
+			from user 
+			where email = #{ value };
+		]]>
+	</select>
+	
 	<select id="getByNo" resultType="uservo" parameterType="long">
 		<![CDATA[
 			select name, email, gender 
@@ -39,16 +47,6 @@
 			select name 
 			from user 
 			where no = #{ value };
-		]]>
-	</select>
-	
-	<select id="getEmailValidation" resultType="boolean" parameterType="string">
-		<![CDATA[
-			select exists(  
-				select *  
-				from user  
-				where email = #{ value }
-			);
 		]]>
 	</select>
 

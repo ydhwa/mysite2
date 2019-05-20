@@ -35,7 +35,12 @@
 					<c:forEach items='${ list }' var='vo' varStatus='status'>
 						<tr>
 							<td>${ count - status.index }</td>
-							<td><a href="${ pageContext.servletContext.contextPath }/board/view/${ vo.no }">${ vo.title }</a></td>
+							<td style="text-align: left; padding-left: ${ 15 * vo.depth }px;">
+								<c:if test="${ vo.depth > 0 }">
+									<img src="'${ pageContext.servletContext.contextPath }/assets/images/reply.png">
+								</c:if>
+								<a href="${ pageContext.servletContext.contextPath }/board/view/${ vo.no }">${ vo.title }</a>
+							</td>
 							<td>${ vo.userName }</td>
 							<td>${ vo.views }</td>
 							<td>${ vo.regDate }</td>
@@ -44,6 +49,22 @@
 					</c:forEach>
 					
 				</table>
+				
+				<!-- pager 추가 -->
+				<div class="pager">
+					<ul>
+					
+						<li><a href="">◀</a></li>
+						<li><a href="">1</a></li>
+						<li class="selected">2</li>
+						<li><a href="/board/list?p=3">3</a></li>
+						<li>4</li>
+						<li>5</li>
+						<li><a href="">▶</a></li>
+					</ul>
+				</div>					
+				<!-- pager 추가 -->
+				
 				<div class="bottom">
 					<a href="${ pageContext.servletContext.contextPath }/board/add" id="new-book">글쓰기</a>
 				</div>				
