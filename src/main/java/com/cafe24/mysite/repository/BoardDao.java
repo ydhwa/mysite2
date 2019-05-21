@@ -1,6 +1,7 @@
 package com.cafe24.mysite.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -18,34 +19,43 @@ public class BoardDao {
 
 	@Autowired
 	private SqlSession sqlSession;
-
+	
+	// 리스트 얻기 [일반 / 검색]
+	public List<BoardVo> getList(Map map) {
+		return sqlSession.selectList("board.getList", map);
+	}
+	
+	// 게시글 얻기 [뷰 / 수정]
+	public BoardVo get(Map map) {
+		return sqlSession.selectOne("board.getByNo", map);
+	}
+	
+	// 전체 게시글 수 얻기 [일반 / 검색]
+	public Integer getListSize(String keyword) {
+		return sqlSession.selectOne("board.getListSize", keyword);
+	}
+	
+	// 삽입
 	public Boolean insert(BoardVo vo) {
 		int count = sqlSession.insert("board.insert", vo);
 		return 1 == count;
 	}
-
+	
+	// orderNo 재정렬(수정 시 사용)
+	public Boolean updateOrderNo(Map map) {
+		int count = sqlSession.update("board.updateOrderNo", map);
+		return 1 == count;
+	}
+	
+	// 수정
 	public Boolean update(BoardVo vo) {
 		int count = sqlSession.update("board.update", vo);
 		return 1 == count;
 	}
-
-	// updateform, view(update에서는 등록일과 조회수를 볼 필요 없지만 그냥 한번에 처리해버림)
-	public BoardVo get(Long no) {
-		return sqlSession.selectOne("board.getByNo", no);
-	}
-
-	public List<BoardVo> getList() {
-		return sqlSession.selectList("board.getList");
-	}
-
-	public Integer getListSize() {
-		return sqlSession.selectOne("board.getListSize");
-	}
-
+	
+	// 삭제 (정말 삭제하는 것이 아니라 비활성화 상태로 만들어둔다.)
 	public Boolean delete(Long no) {
 		int count = sqlSession.delete("board.delete", no);
 		return 1 == count;
 	}
-
-
 }

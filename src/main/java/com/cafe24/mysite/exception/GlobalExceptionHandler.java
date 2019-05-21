@@ -7,6 +7,8 @@ import java.io.StringWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -15,6 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+	
+	private static final Log LOGGER = LogFactory.getLog(GlobalExceptionHandler.class);
 
 	// 이제 mysite2의 Exception은 전부 여기로 들어옴
 	@ExceptionHandler(Exception.class) // Exception이 발생하면 여길 불러줘!
@@ -24,8 +28,7 @@ public class GlobalExceptionHandler {
 		e.getMessage();
 		StringWriter errors = new StringWriter();
 		e.printStackTrace(new PrintWriter(errors)); // 보조 스트림 이용하여 연결
-//		LOGGER.error(errors.toString());
-		System.out.println(errors.toString());
+		LOGGER.error(errors.toString());
 
 		String accept = request.getHeader("accept");
 		if (accept.matches(".*application/json.*")) { // application/json을 포함한 모든 문자

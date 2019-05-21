@@ -36,7 +36,12 @@
 				</table>
 				<div class="bottom">
 					<a href="${ pageContext.servletContext.contextPath }/board">글목록</a>
-					<a href="${ pageContext.servletContext.contextPath }/board/update/${ vo.no }">글수정</a>
+					<c:if test="${ authUser.no == vo.userNo }">
+						<a href="${ pageContext.servletContext.contextPath }/board/update/${ vo.no }">글수정</a>
+					</c:if>
+					<c:if test="${ authUser != null }">
+						<a href="${ pageContext.servletContext.contextPath }/board/write?groupno=${ vo.groupNo }&orderno=${ vo.orderNo }&depth=${ vo.depth }">답글달기</a>
+					</c:if>
 				</div>
 			</div>
 		</div>

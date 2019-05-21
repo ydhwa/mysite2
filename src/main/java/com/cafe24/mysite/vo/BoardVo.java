@@ -1,20 +1,22 @@
 package com.cafe24.mysite.vo;
 
-public class BoardVo {
+public class BoardVo {	
 	private Long no;
 	private String title;
 	private String contents;
 	private Integer hit;
 	private String regDate;
+	private String status;
 	
 	// pager
-	private Long groupNo;
-	private Long orderNo;
+	private Integer groupNo;
+	private Integer orderNo;
 	private Integer depth;
 	
 	// join
 	private Long userNo;
 	private String userName;
+	
 	
 	public Long getNo() {
 		return no;
@@ -46,16 +48,22 @@ public class BoardVo {
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
-	public Long getGroupNo() {
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public Integer getGroupNo() {
 		return groupNo;
 	}
-	public void setGroupNo(Long groupNo) {
+	public void setGroupNo(Integer groupNo) {
 		this.groupNo = groupNo;
 	}
-	public Long getOrderNo() {
+	public Integer getOrderNo() {
 		return orderNo;
 	}
-	public void setOrderNo(Long orderNo) {
+	public void setOrderNo(Integer orderNo) {
 		this.orderNo = orderNo;
 	}
 	public Integer getDepth() {
@@ -79,7 +87,7 @@ public class BoardVo {
 	@Override
 	public String toString() {
 		return "BoardVo [no=" + no + ", title=" + title + ", contents=" + contents + ", hit=" + hit + ", regDate="
-				+ regDate + ", groupNo=" + groupNo + ", orderNo=" + orderNo + ", depth=" + depth + ", userNo=" + userNo
-				+ ", userName=" + userName + "]";
+				+ regDate + ", status=" + status + ", groupNo=" + groupNo + ", orderNo=" + orderNo + ", depth=" + depth
+				+ ", userNo=" + userNo + ", userName=" + userName + "]";
 	}
 }

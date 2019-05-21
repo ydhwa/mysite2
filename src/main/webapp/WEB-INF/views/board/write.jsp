@@ -16,8 +16,13 @@
 
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${ pageContext.servletContext.contextPath }/board/add">
+				<form class="board-form" method="post" action="${ pageContext.servletContext.contextPath }/board/write">
 					<table class="tbl-ex">
+						<!-- 답글일 경우에만 해당 -->
+						<input type="hidden" name="groupNo" value="${ groupNo }">
+						<input type="hidden" name="orderNo" value="${ orderNo }">
+						<input type="hidden" name="depth" value="${ depth }">
+					
 						<tr>
 							<th colspan="2">글쓰기</th>
 						</tr>
@@ -33,7 +38,7 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="/board">취소</a>
+						<a href="${ pageContext.servletContext.contextPath }/board">취소</a>
 						<input type="submit" value="등록">
 					</div>
 				</form>				

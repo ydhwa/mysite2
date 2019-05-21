@@ -17,8 +17,8 @@
 
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="" method="post">
-					<input type="text" id="kwd" name="kwd" value="">
+				<form id="search_form" action="${ pageContext.servletContext.contextPath }/board/list" method="get">
+					<input type="text" id="kwd" name="keyword" value="${ keyword }">
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -31,21 +31,47 @@
 						<th>&nbsp;</th>
 					</tr>
 					
-					<c:set var='count' value='${ fn:length(list) }'/>
-					<c:forEach items='${ list }' var='vo' varStatus='status'>
-						<tr>
-							<td>${ count - status.index }</td>
-							<td style="text-align: left; padding-left: ${ 15 * vo.depth }px;">
-								<c:if test="${ vo.depth > 0 }">
-									<img src="'${ pageContext.servletContext.contextPath }/assets/images/reply.png">
-								</c:if>
-								<a href="${ pageContext.servletContext.contextPath }/board/view/${ vo.no }">${ vo.title }</a>
-							</td>
-							<td>${ vo.userName }</td>
-							<td>${ vo.views }</td>
-							<td>${ vo.regDate }</td>
-							<td><a href="${ pageContext.servletContext.contextPath }/board/delete/${ vo.no }" class="del">삭제</a></td>
-						</tr>
+					<c:set var='count' value="${ fn:length(map.boardList) }"/>
+					<c:forEach items='${ map.boardList }' var='vo' varStatus='s'>
+						<c:choose>
+							<c:when test="${ vo.status == 'ACTIVE' }">
+								<tr>
+									<td>${ count - s.index }</td>
+									<td style="text-align: left; padding-left: ${ 15 * vo.depth }px;">
+										<c:if test="${ vo.depth > 0 }">
+											<img src="${ pageContext.servletContext.contextPath }/assets/images/reply.png">
+										</c:if>
+										<a href="${ pageContext.servletContext.contextPath }/board/view/${ vo.no }">${ vo.title }</a>
+									</td>
+									<td>${ vo.userName }</td>
+									<td>${ vo.hit }</td>
+									<td>${ vo.regDate }</td>
+									<td>
+										<c:if test="${ authUser.no == vo.userNo }">
+											<a href="${ pageContext.servletContext.contextPath }/board/delete/${ vo.no }" class="del">삭제</a>
+										</c:if>
+									</td>
+								</tr>
+							</c:when>
+							<c:when test="${ vo.status == 'DELETED' }">
+								<tr style="color: #ccc">
+									<td>${ count - status.index }</td>
+									<td style="text-align: left; padding-left: ${ 15 * vo.depth }px;">
+										<c:if test="${ vo.depth > 0 }">
+											<img src="${ pageContext.servletContext.contextPath }/assets/images/reply.png" style="opacity: 0.3;">
+										</c:if>
+										${ vo.title }
+									</td>
+									<td>${ vo.userName }</td>
+									<td>${ vo.hit }</td>
+									<td>${ vo.regDate }</td>
+									<td>
+									</td>
+								</tr>
+							</c:when>
+							
+						</c:choose>
+						
 					</c:forEach>
 					
 				</table>
@@ -53,20 +79,45 @@
 				<!-- pager 추가 -->
 				<div class="pager">
 					<ul>
-					
-						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li class="selected">2</li>
-						<li><a href="/board/list?p=3">3</a></li>
-						<li>4</li>
-						<li>5</li>
-						<li><a href="">▶</a></li>
+						<c:choose>
+							<c:when test="${ map.prevPage != -1 }">
+								<li><a href="${ pageContext.servletContext.contextPath }/board/list?p=${ map.prevPage }&keyword=${ map.keyword }">◀</a></li>
+							</c:when>
+							<c:otherwise>
+								<li style="color: #ddd">◀</li>
+							</c:otherwise>
+						</c:choose>
+						
+						<c:forEach var="i" begin="${ map.startPage }" end="${ map.startPage + map.countPerPager - 1 }" step="1">
+							<c:choose>
+								<c:when test="${ map.currPage == i }">
+									<li class="selected">${ i }</li>
+								</c:when>
+								<c:when test="${ i <= map.totalPageCount }">
+									<li><a href="${ pageContext.servletContext.contextPath }/board/list?p=${ i }&keyword=${ map.keyword }">${ i }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li style="color: #ddd">${ i }</li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						
+						<c:choose>
+							<c:when test="${ map.nextPage != -1 }">
+								<li><a href="${ pageContext.servletContext.contextPath }/board/list?p=${ map.nextPage }&keyword=${ map.keyword }">▶</a></li>
+							</c:when>
+							<c:otherwise>
+								<li style = "color: #ddd">▶</li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
 				</div>					
 				<!-- pager 추가 -->
 				
 				<div class="bottom">
-					<a href="${ pageContext.servletContext.contextPath }/board/add" id="new-book">글쓰기</a>
+					<c:if test="${ authUser != null }">
+						<a href="${ pageContext.servletContext.contextPath }/board/write" id="new-book">글쓰기</a>
+					</c:if>
 				</div>				
 			</div>
 		</div>
