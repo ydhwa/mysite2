@@ -53,7 +53,7 @@ input#kwd	{
 	color:#fff 
 }
 
-.tbl-ex td {
+.tbl-ex tr {
 	border-top:1px dotted #333;
 	border-bottom:1px dotted #333; 
 }

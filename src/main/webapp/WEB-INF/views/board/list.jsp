@@ -54,19 +54,9 @@
 								</tr>
 							</c:when>
 							<c:when test="${ vo.status == 'DELETED' }">
-								<tr style="color: #ccc">
-									<td>${ count - status.index }</td>
-									<td style="text-align: left; padding-left: ${ 15 * vo.depth }px;">
-										<c:if test="${ vo.depth > 0 }">
-											<img src="${ pageContext.servletContext.contextPath }/assets/images/reply.png" style="opacity: 0.3;">
-										</c:if>
-										${ vo.title }
-									</td>
-									<td>${ vo.userName }</td>
-									<td>${ vo.hit }</td>
-									<td>${ vo.regDate }</td>
-									<td>
-									</td>
+								<tr>
+									<td>${ count - s.index }</td>
+									<td colspan="5" style="color: #bbb; text-align: center;">! 삭제된 게시글입니다.</td>
 								</tr>
 							</c:when>
 							
