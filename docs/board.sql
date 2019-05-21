@@ -39,3 +39,7 @@ order by group_no desc, order_no asc
 limit 0, 5;
     
 select count(*) from board where title like '%hey%';
+
+update board
+set hit = hit + 1
+where no = 1;

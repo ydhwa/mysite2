@@ -53,6 +53,12 @@ public class BoardDao {
 		return 1 == count;
 	}
 	
+	// 조회수 1+
+	public Boolean updateHit(Long no) {
+		int count = sqlSession.update("board.updateHit", no);
+		return 1 == count;
+	}
+	
 	// 삭제 (정말 삭제하는 것이 아니라 비활성화 상태로 만들어둔다.)
 	public Boolean delete(Long no) {
 		int count = sqlSession.delete("board.delete", no);

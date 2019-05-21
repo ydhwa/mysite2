@@ -58,11 +58,21 @@ public class BoardService {
 	}
 	
 	// 게시글 상세조회 / 수정
-	public BoardVo view(Long no, String mode) {
+	public BoardVo view(Long no, String mode, List<Long> viewList) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("no", no);
 		map.put("mode", mode);
 		
+		// 비회원은 들어가는 족족 조회수가 올라간다.
+		if(viewList == null) {
+			boardDao.updateHit(no);
+		}
+		// 회원이 해당 세션이 처음 조회해보는 페이지면 조회수를 1 높인다. 
+		else if(!viewList.contains(no)) {
+			viewList.add(no);
+			boardDao.updateHit(no);
+		}
+
 		return boardDao.get(map);
 	}
 	

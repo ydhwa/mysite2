@@ -143,6 +143,14 @@ where no = [번호];
 </update>
 
 
+<update id="updateHit" parameterType="long">
+	<![CDATA[
+		update board
+		set hit = hit + 1
+		where no = #{ no }
+	]]>
+</update>
+
 <!-- delete
 
 delete

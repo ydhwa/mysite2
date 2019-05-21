@@ -1,5 +1,7 @@
 package com.cafe24.mysite.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,8 @@ public class BoardController {
 			@PathVariable("no") Long no,
 			HttpSession session,
 			Model model) {
-		BoardVo boardVo = boardService.view(no, "view");
+		
+		BoardVo boardVo = boardService.view(no, "view", (List)session.getAttribute("viewList"));
 		model.addAttribute("vo", boardVo);
 		
 		return "board/view";
@@ -96,7 +99,7 @@ public class BoardController {
 			return "redirect:/board/list";
 		}
 		
-		BoardVo boardVo = boardService.view(no, "update");
+		BoardVo boardVo = boardService.view(no, "update", null);
 		if(authUser.getNo() != boardVo.getUserNo()) {
 			return "redirect:/board/list";
 		}
@@ -121,7 +124,7 @@ public class BoardController {
 		}
 		// 글의 주인이 아니면 수정 권한이 없다.
 		// view에서 처리하긴 한다.
-		BoardVo thisBoardVo = boardService.view(no, "");
+		BoardVo thisBoardVo = boardService.view(no, "", null);
 		if(authUser.getNo() != thisBoardVo.getUserNo()) {
 			return "redirect:/board/list";
 		}

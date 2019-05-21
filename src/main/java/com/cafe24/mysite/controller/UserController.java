@@ -1,5 +1,8 @@
 package com.cafe24.mysite.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +51,7 @@ public class UserController {
 			Model model) {
 		
 		UserVo authUser = userService.getUser(new UserVo(email, password));
+		List<Integer> viewList = new ArrayList<>();	// 들렀던 페이지 목록
 		
 		if(authUser == null) {
 			model.addAttribute("result", "fail");
@@ -55,6 +59,7 @@ public class UserController {
 		}
 		// session 처리
 		session.setAttribute("authUser", authUser);
+		session.setAttribute("viewList", viewList);
 		
 		return "redirect:/";
 	}
