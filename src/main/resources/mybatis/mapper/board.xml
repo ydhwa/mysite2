@@ -4,17 +4,36 @@
 <mapper namespace="board">
 
 <!-- getList(list, search)
-
 select <필요한것들>
 from board
 [where title like '%[키워드]%']
 order by group_no desc, order_no asc
 limit <0부터시작하는시작점> <수량>;
 -->
-
+<select id="getList" resultType="boardvo" parameterType="map">
+	<![CDATA[
+		select b.no as no, 
+			u.name as username, 
+			title, 
+			date_format(b.reg_date, '%Y-%m-%d %H:%i:%s') as regdate, 
+			hit 
+		from board b, user u 
+		where 
+	]]>
+	<if test="keyword != ''">
+		<![CDATA[
+			title like '%#{ keyword }%'
+			and 
+		]]>
+	</if>
+	<![CDATA[
+			b.user_no = u.no 
+		order by group_no desc, order_no asc 
+		limit #{ startIndex }, #{ countPerPage };
+	]]>
+</select>
 
 <!-- getByNo
-
 select b.no as no,
 	u.name as username,
 	title,
@@ -26,7 +45,8 @@ from board b, user u
 where b.user_no = u.no
 	and b.no = #{ value };
 -->
-
+<select id="getByNo" resultType="boardvo" parameterType="long">
+</select>
 
 <!-- getListSize
 
