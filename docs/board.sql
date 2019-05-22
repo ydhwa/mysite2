@@ -1,6 +1,7 @@
 /* board */
 desc board;
 select * from board;
+desc user;
 
 -- insert
 select ifnull((select max(group_no) + 1 from board), 1);

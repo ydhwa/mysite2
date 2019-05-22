@@ -17,8 +17,8 @@ public class BoardService {
 	private BoardDao boardDao;
 
 	// pager
-	private final int COUNT_PER_PAGE = 3;	// 페이지 당 보일 게시글
-	private final int COUNT_PER_PAGER = 5;	// 페이지 당 보일 숫자
+	private final int COUNT_PER_PAGE = 10;	// 페이지 당 보일 게시글 수
+	private final int COUNT_PER_PAGER = 5;	// 페이지 당 보일 페이저 수 < N M O P Q >
 	
 	// 키워드와 현재 페이지에 따른 전체 게시글 조회
 	public Map<String, Object> getListAndPager(int currPage, String keyword) {
@@ -46,7 +46,6 @@ public class BoardService {
 		int nextPage = firstOfPager + COUNT_PER_PAGER > totalPageCount ? -1 : firstOfPager + COUNT_PER_PAGER;
 		// controller에게 반환할 값 세팅
 		map.put("countPerPager", COUNT_PER_PAGER);
-		map.put("countPerPage", COUNT_PER_PAGE);
 		map.put("totalPageCount", totalPageCount);
 		
 		map.put("startPage", firstOfPager);

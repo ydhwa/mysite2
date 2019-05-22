@@ -53,6 +53,7 @@
 									</td>
 								</tr>
 							</c:when>
+							
 							<c:when test="${ vo.status == 'DELETED' }">
 								<tr>
 									<td>${ count - s.index }</td>

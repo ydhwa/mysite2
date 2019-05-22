@@ -12,8 +12,12 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 	<context:annotation-config />
+	
+	<!-- auto proxy -->
+	<aop:aspectj-autoproxy/>
+	
 
-	<context:component-scan base-package="com.cafe24.mysite.service,com.cafe24.mysite.repository">
+	<context:component-scan base-package="com.cafe24.mysite.service, com.cafe24.mysite.repository, com.cafe24.mysite.aspect">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />			

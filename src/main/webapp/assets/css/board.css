@@ -35,6 +35,7 @@ input#kwd	{
 .tbl-ex		{
 	width:100%;
 	margin:10px auto; 
+	/*border-collapse:collapse;	// Chrome css bug 있는데 일단 수정 안하고 넘어감*/
 	border-collapse:collapse;
 	border-bottom:2px solid #333;
 }
@@ -53,7 +54,7 @@ input#kwd	{
 	color:#fff 
 }
 
-.tbl-ex tr {
+.tbl-ex td {
 	border-top:1px dotted #333;
 	border-bottom:1px dotted #333; 
 }

@@ -25,7 +25,6 @@ public class GlobalExceptionHandler {
 	public void handleException(HttpServletRequest request, HttpServletResponse response, Exception e)
 			throws Exception { // Exception의 내용을 읽어봐야 해!
 		// 1. 로깅
-		e.getMessage();
 		StringWriter errors = new StringWriter();
 		e.printStackTrace(new PrintWriter(errors)); // 보조 스트림 이용하여 연결
 		LOGGER.error(errors.toString());
