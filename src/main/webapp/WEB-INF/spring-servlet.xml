@@ -58,6 +58,8 @@
 		<!-- defaultEncoding -->
 		<property name="defaultEncoding" value="utf-8" />
 	</bean>
+	
+<!-- 	<mvc:resources location="/webapp/" mapping="/**"></mvc:resources> -->
 
 	<!-- 6. MessageSource 
 	다국어 할 때도 사용함 -->

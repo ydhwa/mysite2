@@ -62,14 +62,17 @@ public class BoardService {
 		map.put("no", no);
 		map.put("mode", mode);
 		
-		// 비회원은 들어가는 족족 조회수가 올라간다.
-		if(viewList == null) {
-			boardDao.updateHit(no);
-		}
-		// 회원이 해당 세션이 처음 조회해보는 페이지면 조회수를 1 높인다. 
-		else if(!viewList.contains(no)) {
-			viewList.add(no);
-			boardDao.updateHit(no);
+		// 수정 시에도 조회수가 업데이트 되면 곤란하다.
+		if("view".equals(mode)) {
+			// 비회원은 들어가는 족족 조회수가 올라간다.
+			if(viewList == null) {
+				boardDao.updateHit(no);
+			}
+			// 회원이 해당 세션이 처음 조회해보는 페이지면 조회수를 1 높인다.
+			else if(!viewList.contains(no)) {
+				viewList.add(no);
+				boardDao.updateHit(no);
+			}
 		}
 
 		return boardDao.get(map);

@@ -74,11 +74,11 @@ input#kwd	{
 }
 
 .board-form .tbl-ex textarea#contents {
-	width: 470px;
+	/*width: 470px;*/
 	height: 200px;
 	padding: 10px;
 	resize: none;
-	outline: none;	
+	outline: none;
 }
 
 .board-form select {
@@ -110,7 +110,8 @@ a#new-book	 {
 }
 
 .board-form .bottom a,
-.board-form .bottom input[type="submit"] {
+.board-form .bottom input[type="submit"],
+.board-form .bottom input[type="button"] {
 	float:right; 
 	padding:10px 20px 10px 20px; 
 	border:1px solid #555; 

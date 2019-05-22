@@ -9,6 +9,8 @@
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${ pageContext.servletContext.contextPath }/assets/css/board.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/editor/js/HuskyEZCreator.js" charset="utf-8"></script>
+
 </head>
 <body>
 	<div id="container">
@@ -28,13 +30,39 @@
 						<tr>
 							<td class="label">내용</td>
 							<td>
-								<textarea id="contents" name="contents">${ vo.contents }</textarea>
+								<textarea id="contents" name="contents" style="min-width: 485px; width: 485px;">${ vo.contents }</textarea>
 							</td>
+							
+<!-- Smart Editor -->	
+<script type="text/javascript">
+	var oEditors = [];
+	nhn.husky.EZCreator.createInIFrame({
+		oAppRef: oEditors,
+		elPlaceHolder: "contents",
+		sSkinURI: "${ pageContext.servletContext.contextPath }/resources/editor/SmartEditor2Skin.html",
+		fCreator: "createSEditor2"
+	});
+	
+	/* 편집 내용 서버로 전송 */
+	// 저장을 위한 액션 시 submitContents 호출된다고 하자.
+	function submitContents(elClickedObj) {
+		// 에디터 내용이 textarea에 적용됨
+		oEditors.getById["contents"].exec("UPDATE_CONTENTS_FIELD", []);
+		
+		// 에디터의 내용에 대한 값 검증은 document.getElementById("contents").value를 이용하여 처리한다.
+		
+		try {
+			elClickedObj.form.submit();
+		} catch(e) {}		
+	}
+</script>
+
 						</tr>
 					</table>
 					<div class="bottom">
 						<a href="${ pageContext.servletContext.contextPath }/board/view/${ vo.no }">취소</a>
-						<input type="submit" value="수정">
+<!-- 						<input type="submit" value="수정"> -->
+							<input type="button" value="수정" onclick="submitContents(this);">
 					</div>
 				</form>				
 			</div>

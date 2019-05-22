@@ -1,6 +1,6 @@
 /* board */
 desc board;
-select * from board;
+select * from user;
 desc user;
 
 -- insert
