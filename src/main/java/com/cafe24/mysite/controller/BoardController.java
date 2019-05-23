@@ -1,7 +1,10 @@
 package com.cafe24.mysite.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +12,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cafe24.mysite.service.BoardService;
 import com.cafe24.mysite.vo.BoardVo;
+import com.cafe24.mysite.vo.FileVo;
 import com.cafe24.mysite.vo.UserVo;
 import com.cafe24.security.Auth;
-import com.cafe24.security.Auth.Role;
 
 @Controller
 @RequestMapping("/board")
@@ -145,16 +149,14 @@ public class BoardController {
 	
 	// 파일 업로드
 	@RequestMapping(value = "/fileupload", method = RequestMethod.POST)
+	@ResponseBody
 	public String multiplePhotoUpload(
-			@RequestBody String request,
-			Model model) {
+			@RequestHeader("file-name") String fileName,
+			@RequestHeader("file-size") long fileSize,
+			HttpServletRequest request) throws IOException {
 		
-//		MultipartFile file = multipartReqeust.getFile("Filedata");
-//		FileVo fileVo = boardService.fileUpload(file);
-		
-//		model.addAttribute("path", fileVo.getPath());
-//		model.addAttribute("saveName", fileVo.getSaveName());
+		InputStream is = request.getInputStream();
 
-		return "/board/write";
+		return boardService.fileUpload(fileName, fileSize, request.getContextPath(), is);
 	}
 }

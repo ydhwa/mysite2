@@ -44,3 +44,13 @@ select count(*) from board where title like '%hey%';
 update board
 set hit = hit + 1
 where no = 1;
+
+-- 파일 업로드
+show tables;
+desc file;
+
+
+-- admin
+desc site;
+select * from site;
+insert into site values(null, "양동화의 페이지", "양동화의 site에 방문하신 것을 환영합니다!", "/images/profile/20194232284527512aa75cf-ba3c-4717-a24d-b84cff14898d.jpg", "이 사이트는 웹프로그래밍 예제 사이트입니다.");

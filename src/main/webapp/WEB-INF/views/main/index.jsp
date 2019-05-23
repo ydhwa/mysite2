@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>mysite</title>
+<title>${ siteVo.title }</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${ pageContext.servletContext.contextPath }/assets/css/main.css" rel="stylesheet" type="text/css">
 
@@ -17,8 +17,8 @@
 		<div id="wrapper">
 			<div id="content">
 				<div id="site-introduction">
-					<img id="profile"
-						src="https://scontent-icn1-1.xx.fbcdn.net/v/t1.0-1/p240x240/30705531_2083087868372808_5261052926483232647_n.jpg?_nc_cat=0&oh=db97a9950eade94d765d2b566ff92fbc&oe=5BE17354">
+					<img id="profile" style="width: 100%; "
+						src="${ pageContext.servletContext.contextPath }/images/profile/20194232284527512aa75cf-ba3c-4717-a24d-b84cff14898d.jpg">
 					<h2>안녕하세요. 안대혁의 mysite에 오신 것을 환영합니다.</h2>
 					<p>
 						이 사이트는 웹 프로그램밍 실습과제 예제 사이트입니다.<br> 메뉴는 사이트 소개, 방명록, 게시판이 있구요.

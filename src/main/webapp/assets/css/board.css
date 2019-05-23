@@ -134,6 +134,11 @@ a.del	{
 	font-size:0;
 }
 
+/* 이미지 첨부 시 잘리는 현상 */
+.view-content img {
+	width: 450px;
+}
+
 /*
 	게시판 리스트 페이징
 */

@@ -1,15 +1,30 @@
 package com.cafe24.mysite.controller;
 
-import com.cafe24.security.Auth;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@Auth(role = Auth.Role.ADMIN )
+//@Auth(role = Auth.Role.ADMIN )
+@Controller
+@RequestMapping("/admin")
 public class AdminController {
 
-	public String site() {
-		return "";
+	@RequestMapping({"", "/main"})
+	public String main() {
+		return "admin/main";
 	}
 	
+	@RequestMapping("/user")
 	public String user() {
-		return "";
+		return "admin/user";
+	}
+	
+	@RequestMapping("/board")
+	public String board() {
+		return "admin/board";
+	}
+	
+	@RequestMapping("/guestbook")
+	public String guestbook() {
+		return "admin/guestbook";
 	}
 }

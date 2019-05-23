@@ -62,10 +62,9 @@ public class UserController {
 	}
 	
 	// 개인정보 수정
-	@Auth(role = Auth.Role.USER)
+	@Auth
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public String update(@AuthUser UserVo authUser, Model model) {
-//		authUser = (UserVo) session.getAttribute("authUser");
 		model.addAttribute("userVo", userService.getUser(authUser.getNo()));
 
 		return "user/update";

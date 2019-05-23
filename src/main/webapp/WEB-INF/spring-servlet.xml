@@ -32,6 +32,12 @@
 				</property>
 			</bean>
 		</mvc:message-converters>
+
+		<!-- Argument Resolver -->
+		<mvc:argument-resolvers>
+			<bean
+				class="com.cafe24.security.AuthUserHandlerMethodArgumentResolver" />
+		</mvc:argument-resolvers>
 	</mvc:annotation-driven>
 
 	<!-- 2. 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
@@ -58,8 +64,9 @@
 		<!-- defaultEncoding -->
 		<property name="defaultEncoding" value="utf-8" />
 	</bean>
+	<!-- the mvc resources url mapping -->
+	<mvc:resources mapping="/images/**" location="file:/mysite-uploads/" />
 
-	<!-- <mvc:resources location="/webapp/" mapping="/**"></mvc:resources> -->
 
 	<!-- 6. MessageSource 다국어 할 때도 사용함 -->
 	<bean id="messageSource"
@@ -89,9 +96,9 @@
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
-			<mvc:exclude-mapping path="/user/auth"/>
-			<mvc:exclude-mapping path="/user/logout"/>
-			<mvc:exclude-mapping path="/assets/**"/>
+			<mvc:exclude-mapping path="/user/auth" />
+			<mvc:exclude-mapping path="/user/logout" />
+			<mvc:exclude-mapping path="/assets/**" />
 			<bean class="com.cafe24.security.AuthInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
@@ -103,6 +110,8 @@
 	<context:component-scan
 		base-package="com.cafe24.mysite.controller, com.cafe24.mysite.exception, com.cafe24.mysite.controller.api, com.cafe24.mysite.aspect" />
 
+
 	<!-- auto proxy -->
 	<aop:aspectj-autoproxy />
+
 </beans>

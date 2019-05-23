@@ -6,6 +6,9 @@ body,#smart_editor2,#smart_editor2 p,#smart_editor2 h1,#smart_editor2 h2,#smart_
 #smart_editor2 span,#smart_editor2 em{font-size:12px}
 #smart_editor2 em,#smart_editor2 address{font-style:normal}
 #smart_editor2 img,#smart_editor2 fieldset{border:0}
+
+/* #smart_editor2 img {width: 100%} */
+
 #smart_editor2 hr{display:none}
 #smart_editor2 ol,#smart_editor2 ul{list-style:none}
 #smart_editor2 button{border:0;background:none;font-size:11px;vertical-align:top;cursor:pointer}

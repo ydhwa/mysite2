@@ -2,15 +2,16 @@ package com.cafe24.mysite.service;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.cafe24.mysite.repository.BoardDao;
 import com.cafe24.mysite.vo.BoardVo;
@@ -111,22 +112,24 @@ public class BoardService {
 	// 파일 업로드
 	private static final String SAVE_PATH = "/mysite-uploads";
 	private static final String URL = "/images";
-	public FileVo fileUpload(MultipartFile multipartFile) {
+	public String fileUpload(String originalName, long fileSize, String contextPath, InputStream is) {
+		// 파일 정보
+		StringBuffer sb = new StringBuffer();
+		
 		FileVo vo = null;
 		try {
-			if(multipartFile.isEmpty()) {
-				return vo;
-			}
-			
-			String originalName = multipartFile.getOriginalFilename();
-			String extName = originalName.substring(originalName.lastIndexOf("." + 1));
+			String extName = originalName.substring(originalName.lastIndexOf(".") + 1);
 			String saveName = generateSaveFileName(extName);
-			long fileSize = multipartFile.getSize();
 			
-			byte[] fileData = multipartFile.getBytes();
 			String path = SAVE_PATH + "/" + saveName;
+			
 			OutputStream os = new FileOutputStream(path);
-			os.write(fileData);
+			int numRead;
+			byte[] data = new byte[(int) fileSize];
+			while((numRead = is.read(data, 0, data.length)) != -1) {
+				os.write(data, 0, numRead);
+			}
+			os.flush();
 			os.close();
 			
 			String url = URL + "/" + saveName;
@@ -137,10 +140,18 @@ public class BoardService {
 			vo.setPath(path);
 			vo.setSaveName(saveName);
 			
+			// 정보 출력
+			sb = new StringBuffer();
+			sb
+			.append("&bNewLine=true")
+			.append("&sFileName=")
+			.append(originalName)
+			.append("&sFileURL=")
+			.append(contextPath + url);
 		} catch(IOException e) {
 			throw new RuntimeException("Fileupload ERROR: " + e);
 		}
-		return vo;
+		return sb.toString();
 	}
 	private String generateSaveFileName(String extName) {
 		String filename = "";
@@ -153,6 +164,7 @@ public class BoardService {
 		filename += calendar.get(Calendar.MINUTE);
 		filename += calendar.get(Calendar.SECOND);
 		filename += calendar.get(Calendar.MILLISECOND);
+		filename += UUID.randomUUID().toString();	// multiple file upload 대비
 		filename += ("." + extName);
 
 		return filename;

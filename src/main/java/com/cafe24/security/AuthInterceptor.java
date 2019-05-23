@@ -8,7 +8,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.cafe24.mysite.vo.UserVo;
-import com.cafe24.security.Auth.Role;
 
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 
