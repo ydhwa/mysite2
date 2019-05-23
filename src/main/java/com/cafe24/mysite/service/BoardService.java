@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cafe24.mysite.repository.BoardDao;
+import com.cafe24.mysite.repository.FileDao;
 import com.cafe24.mysite.vo.BoardVo;
 import com.cafe24.mysite.vo.FileVo;
 
@@ -22,6 +23,9 @@ public class BoardService {
 
 	@Autowired
 	private BoardDao boardDao;
+	
+	@Autowired
+	private FileDao fileDao;
 
 	// pager
 	private final int COUNT_PER_PAGE = 10;	// 페이지 당 보일 게시글 수
@@ -94,25 +98,31 @@ public class BoardService {
 		
 		// order 순서 재정렬 뒤에 삽입시켜줘야 한다!
 		boardDao.updateOrderNo(map);
+
 		return boardDao.insert(boardVo);
 	}
 	
 	
 	// 수정
 	public Boolean updateBoard(BoardVo boardVo) {
+		// 여기서 파일을 삭제한다. (집어넣은 것은 다시 생성되고, 기존 것은 삭제되는 방식)
+		fileDao.delete(boardVo.getNo());
+		
 		return boardDao.update(boardVo);
 	}
 	
 	
 	// 삭제
 	public Boolean deleteBoard(Long no) {
+		fileDao.delete(no);
+		
 		return boardDao.delete(no);
 	}
 	
 	// 파일 업로드
 	private static final String SAVE_PATH = "/mysite-uploads";
 	private static final String URL = "/images";
-	public String fileUpload(String originalName, long fileSize, String contextPath, InputStream is) {
+	public String fileUpload(Long boardNo, String originalName, long fileSize, String contextPath, InputStream is) {
 		// 파일 정보
 		StringBuffer sb = new StringBuffer();
 		
@@ -139,6 +149,9 @@ public class BoardService {
 			vo.setExtName(extName);
 			vo.setPath(path);
 			vo.setSaveName(saveName);
+			
+			// DB에 저장
+			fileDao.insert(vo);
 			
 			// 정보 출력
 			sb = new StringBuffer();

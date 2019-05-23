@@ -48,9 +48,24 @@ where no = 1;
 -- 파일 업로드
 show tables;
 desc file;
+select * from file;
 
+(select `auto_increment` from information_schema.tables where table_schema = 'webdb' and table_name = 'board');
+
+-- role 추가
+desc user;
+alter table user 
+add column role 
+enum ('ADMIN', 'USER') default 'USER' not null after gender;
+select * from user;
+-- 관리자 추가(이렇게 하는 것이 나음)
+insert into user values(null, '관리자', 'admin@mysite.com', '1234', 'female', 'ADMIN', now());
 
 -- admin
 desc site;
 select * from site;
 insert into site values(null, "양동화의 페이지", "양동화의 site에 방문하신 것을 환영합니다!", "/images/profile/20194232284527512aa75cf-ba3c-4717-a24d-b84cff14898d.jpg", "이 사이트는 웹프로그래밍 예제 사이트입니다.");
+
+select title, welcome_message as welcomeMessage, profile_url as profileUrl, description
+from site
+where no = 1;

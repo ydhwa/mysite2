@@ -72,14 +72,10 @@ public class UserController {
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String update(
 			@ModelAttribute UserVo userVo,
+			@AuthUser UserVo authUser,
 			HttpSession session,
 			Model model) {
 		
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		
-		if(authUser == null) {	// 로그인 정보가 없는데 수정하려고 할 때
-			return "redirect:/";
-		}
 		userVo.setNo(authUser.getNo());
 		
 		session.setAttribute("authUser", userService.update(userVo));

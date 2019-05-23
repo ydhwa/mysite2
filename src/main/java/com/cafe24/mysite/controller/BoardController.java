@@ -32,12 +32,12 @@ public class BoardController {
 	private BoardService boardService;
 
 	// 게시글 리스트 조회 / 검색
+	@Auth(role = Auth.Role.USER)
 	@RequestMapping(value = {"/list", ""})
 	public String list(
 			Model model,
 			@RequestParam(value = "p", defaultValue = "1") int currPage,
-			@RequestParam(value = "keyword", defaultValue = "") String keyword,
-			HttpSession session) {
+			@RequestParam(value = "keyword", defaultValue = "") String keyword) {
 		
 		model.addAttribute("map", boardService.getListAndPager(currPage, keyword));
 		
@@ -54,6 +54,13 @@ public class BoardController {
 		
 		BoardVo boardVo = boardService.view(no, "view", (List)session.getAttribute("viewList"));
 		model.addAttribute("vo", boardVo);
+		
+		// 당사자일 경우 수정이나 삭제 작업을 할 수도 있으니 세션에 정보를 등록해둔다.
+		// 보기만 할거면 비효율적인 처리기는 하다.
+		if(session.getAttribute("authUser") != null && ((UserVo) session.getAttribute("authUser")).getNo() == boardVo.getUserNo()) {
+			// 이미지 삭제 or 업데이트 위함
+			session.setAttribute("boardNo", no);
+		}
 		
 		return "board/view";
 	}
@@ -74,10 +81,12 @@ public class BoardController {
 		
 		return "board/write";
 	}
+	
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public String write(
 			@ModelAttribute BoardVo boardVo,
 			HttpSession session) {
+		
 		boardVo.setUserNo(((UserVo) session.getAttribute("authUser")).getNo());
 		boardService.writeBoard(boardVo);
 		return "redirect:/board/list";
@@ -85,46 +94,35 @@ public class BoardController {
 	
 
 	// 게시글 수정
+	@Auth(role = Auth.Role.USER)
 	@RequestMapping(value = "/update/{no}", method = RequestMethod.GET)
 	public String update(
-			HttpSession session,
 			Model model,
-			@PathVariable("no") Long no) {
-		// 접근제어 - 로그인을 한 사용자만 게시글을 남길 수 있다.
-		// view에서 거르긴 한다.
-		if(session == null) {
-			return "redirect:/board/list";
-		}
+			@PathVariable("no") Long no,
+			HttpSession session) {
+		
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if(authUser == null) {
-			return "redirect:/board/list";
-		}
 		
 		BoardVo boardVo = boardService.view(no, "update", null);
-		if(authUser.getNo() != boardVo.getUserNo()) {
+		if(authUser.getNo() != boardVo.getUserNo()) {	// 수정하려는 사람 != 작성한 사람
 			return "redirect:/board/list";
 		}
-		
+	
 		model.addAttribute("vo", boardVo);
 		
 		return "/board/update";
 	}
+	@Auth(role = Auth.Role.USER)
 	@RequestMapping(value = "/update/{no}", method = RequestMethod.POST)
 	public String update(
 			HttpSession session,
 			@PathVariable("no") Long no,
 			@ModelAttribute BoardVo boardVo) {
-		// 접근제어 - 로그인을 한 사용자만 게시글을 남길 수 있다.
-		// update form에서 처리하긴 한다.
-		if(session == null) {
-			return "redirect:/board/list";
-		}
+		
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if(authUser == null) {
-			return "redirect:/board/list";
-		}
+		
 		// 글의 주인이 아니면 수정 권한이 없다.
-		// view에서 처리하긴 한다.
+		// update form과 view에서 처리하긴 한다.
 		BoardVo thisBoardVo = boardService.view(no, "", null);
 		if(authUser.getNo() != thisBoardVo.getUserNo()) {
 			return "redirect:/board/list";
@@ -133,15 +131,23 @@ public class BoardController {
 		boardVo.setNo(no);
 		boardService.updateBoard(boardVo);
 		
+		// 세션에 설정해놨던 게시글 번호 속성을 삭제한다.
+		session.removeAttribute("boardNo");
+		
 		return "redirect:/board/list";
 	}
 	
 	// 게시글 삭제
+	@Auth(role = Auth.Role.USER)
 	@RequestMapping(value = "/delete/{no}")
 	public String delete(
 			HttpSession session,
 			@PathVariable("no") Long no) {
+		
 		boardService.deleteBoard(no);
+		
+		// 세션에 설정해놨던 게시글 번호 속성 삭제한다.
+		session.removeAttribute("boardNo");
 		
 		return "redirect:/board/list";
 	}
@@ -151,12 +157,13 @@ public class BoardController {
 	@RequestMapping(value = "/fileupload", method = RequestMethod.POST)
 	@ResponseBody
 	public String multiplePhotoUpload(
+			HttpSession session,
 			@RequestHeader("file-name") String fileName,
 			@RequestHeader("file-size") long fileSize,
 			HttpServletRequest request) throws IOException {
 		
 		InputStream is = request.getInputStream();
 
-		return boardService.fileUpload(fileName, fileSize, request.getContextPath(), is);
+		return boardService.fileUpload((Long)session.getAttribute("boardNo"), fileName, fileSize, request.getContextPath(), is);
 	}
 }
