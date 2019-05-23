@@ -1,14 +1,20 @@
 package com.cafe24.mysite.service;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cafe24.mysite.repository.BoardDao;
 import com.cafe24.mysite.vo.BoardVo;
+import com.cafe24.mysite.vo.FileVo;
 
 @Service
 public class BoardService {
@@ -100,6 +106,56 @@ public class BoardService {
 	// 삭제
 	public Boolean deleteBoard(Long no) {
 		return boardDao.delete(no);
+	}
+	
+	// 파일 업로드
+	private static final String SAVE_PATH = "/mysite-uploads";
+	private static final String URL = "/images";
+	public FileVo fileUpload(MultipartFile multipartFile) {
+		FileVo vo = null;
+		try {
+			if(multipartFile.isEmpty()) {
+				return vo;
+			}
+			
+			String originalName = multipartFile.getOriginalFilename();
+			String extName = originalName.substring(originalName.lastIndexOf("." + 1));
+			String saveName = generateSaveFileName(extName);
+			long fileSize = multipartFile.getSize();
+			
+			byte[] fileData = multipartFile.getBytes();
+			String path = SAVE_PATH + "/" + saveName;
+			OutputStream os = new FileOutputStream(path);
+			os.write(fileData);
+			os.close();
+			
+			String url = URL + "/" + saveName;
+			
+			vo = new FileVo();
+			vo.setOriginalName(originalName);
+			vo.setExtName(extName);
+			vo.setPath(path);
+			vo.setSaveName(saveName);
+			
+		} catch(IOException e) {
+			throw new RuntimeException("Fileupload ERROR: " + e);
+		}
+		return vo;
+	}
+	private String generateSaveFileName(String extName) {
+		String filename = "";
+		Calendar calendar = Calendar.getInstance();
+
+		filename += calendar.get(Calendar.YEAR);
+		filename += calendar.get(Calendar.MONTH);
+		filename += calendar.get(Calendar.DATE);
+		filename += calendar.get(Calendar.HOUR);
+		filename += calendar.get(Calendar.MINUTE);
+		filename += calendar.get(Calendar.SECOND);
+		filename += calendar.get(Calendar.MILLISECOND);
+		filename += ("." + extName);
+
+		return filename;
 	}
 
 }
