@@ -210,7 +210,7 @@
 					<url>http://127.0.0.1:8080/manager/text</url>
 					<path>/mysite2</path>
 					<username>admin</username>
-					<password>manager</password>
+					<password>admin</password>
 				</configuration>
 			</plugin>
 		</plugins>
