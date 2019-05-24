@@ -20,12 +20,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cafe24.mysite.service.BoardService;
 import com.cafe24.mysite.vo.BoardVo;
-import com.cafe24.mysite.vo.FileVo;
 import com.cafe24.mysite.vo.UserVo;
 import com.cafe24.security.Auth;
 
 @Controller
 @RequestMapping("/board")
+// 매 페이지마다 수정이나 삭제 등의 작업을 거친 후에 목록으로 리다이렉트 되면
+// 그 전에 자신이 방문했던 페이지로 이동하도록 구현해야 한다.(UX 관점에서)
 public class BoardController {
 	
 	@Autowired
