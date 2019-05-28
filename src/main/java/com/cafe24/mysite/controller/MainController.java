@@ -16,7 +16,7 @@ public class MainController {
 	@Autowired
 	private AdminService adminService;
 	
-	@RequestMapping({"/", "/main"})
+	@RequestMapping({"", "/main"})
 	public String main(Model model) {
 		SiteVo siteVo = adminService.getSite();
 		model.addAttribute("siteVo", siteVo);
