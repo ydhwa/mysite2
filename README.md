@@ -1,4 +1,4 @@
-# Servlet 연습
+# Servlet ~ Spring 실습
 
 ## 강의 시간에 구현한 내용
 - 회원가입 및 로그인/로그아웃 부분 Spring 이용하여 변경
