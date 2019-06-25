@@ -14,3 +14,50 @@
 #dialog-upload-form input				{ outline:none; margin-top:5px; }
 #dialog-upload-form input[type='text']	{ padding: 5px; border:2px solid #A9A9A9; width:260px; }
 
+
+/* 추가 */
+#gallery h1		{
+	color: #5C5C5C;
+	margin-bottom:10px;
+	background:url('/mysite2/assets/images/gallery/gallery.png') 0 0 no-repeat;
+	background-size: 35px;
+	padding-left:40px;
+}
+
+#upload-image {
+	display: block;
+	float: right;
+}
+
+#gallery h1 {
+	float: left;
+}
+
+#gallery ul {
+	claer: both;
+}
+
+#gallery ul li {
+	position: relative;
+	float: left;
+	overflow-y: hidden;
+}
+
+#gallery ul li a.image {
+	width: 114px;
+	height: 114px;
+	background-size: 114px;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+#gallery ul li a.del-button {
+	position: absolute;
+	right: 2px;
+	top: 3px;
+	display: none;
+}
+
+#gallery ul li:hover a.del-button {
+	display: block;
+}
