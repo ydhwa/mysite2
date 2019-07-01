@@ -26,7 +26,7 @@
 	<!-- Connection Pool DataSource-->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://192.168.1.48:5432/webdb" />
+		<property name="url" value="jdbc:postgresql://192.168.219.101:5432/webdb" />
 		<property name="username" value="webdb" />
 		<property name="password" value="webdb" />
 	</bean>
